@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package comment;
+
+service CommentService {
+    rpc WriteComment(CommentRequest) returns (CommentResponse) {}
+    rpc GetComments(GetAllCommentsRequest) returns (Comments) {}
+    rpc GetCommentsForPost(GetAllCommentsRequest) returns (Comments) {}
+    rpc DeleteComment(IdRequest) returns (CommentResponse) {}
+}
+
+message CommentRequest {
+    int64 post_id = 1;
+    string user_id = 2;
+    string text = 3;
+}
+
+message CommentResponse {
+    int64 id = 1;
+    int64 post_id = 2;
+    string post_title = 3;
+    string user_id = 4;
+    string user_name = 5;
+    string post_user_name = 6;
+    string text = 7;
+    string created_at = 8;
+}
+
+message GetAllCommentsRequest {
+    int64 post_id = 1;
+}
+
+message Comments {
+    repeated CommentResponse comments = 1;
+}
+
+message IdRequest {
+    int64 id = 1;
+}

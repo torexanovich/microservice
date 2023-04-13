@@ -1,0 +1,114 @@
+syntax="proto3";
+
+package user;
+
+import "google/protobuf/empty.proto";
+
+service UserService{
+    rpc CreateUser(UserRequest) returns (UserResponse){}
+    rpc GetUserById(IdRequest) returns (UserResponse){}
+    rpc GetUserForClient(IdRequest) returns (UserResponse){}
+    rpc GetAllUsers(AllUsersRequest) returns (Users) {}
+    rpc SearchUsersByName(SearchUsers) returns (Users){}
+    rpc UpdateUser(UpdateUserRequest) returns (google.protobuf.Empty){}
+    rpc DeleteUser(IdRequest) returns (UserResponse){}
+    rpc CheckField (CheckFieldReq) returns (CheckFieldResp) {}
+    rpc Login(LoginReq) returns (LoginResp) {}
+    rpc GetByEmail(EmailReq) returns (UserResponse) {}
+}
+
+message UserRequest{
+    string first_name = 1;
+    string last_name = 2;
+    string email = 3;
+    string password = 4;
+    string code = 5;
+    string id = 6;
+    string refresh_token = 7;
+
+}
+
+message UpdateUserRequest {
+    string first_name = 1;
+    string last_name = 2;
+    string email = 3;
+    string id = 4;
+    string password = 5;
+}
+
+message SearchUsers {
+    string first_name = 1;
+}
+
+message UserResponse{
+    string id = 1;
+    string first_name = 2;
+    string last_name = 3;
+    string email = 4;
+    repeated Post posts = 5;
+    string created_at = 6;
+    string updated_at = 7;
+    string password = 8;
+    string access_token = 9;
+    string refresh_token = 10;
+}
+
+message Post {
+    int64 id = 1;
+    string title = 2;
+    string description = 3;
+    int64 likes = 4;
+    repeated Comment comments = 5;
+    string created_at = 6;
+    string updated_at = 7;
+}
+
+message Comment {
+    int64 post_id = 1;
+    string post_title = 2;
+    string user_id = 3;
+    string user_name = 4;
+    string post_user_name = 5;
+    string text = 6;
+    string created_at = 7;
+}
+
+message IdRequest{
+    string id = 1;
+}
+
+message AllUsersRequest{
+    int64 page = 1;
+    int64 limit = 2;
+}
+
+message Users {
+    repeated UserResponse users = 1;
+}
+
+message CheckFieldReq {
+    string field = 1;
+    string value = 2;
+}
+message CheckFieldResp {
+    bool exists = 1;
+}
+
+message LoginReq {
+    string password = 1;
+    string email = 2;
+}
+
+message LoginResp {
+    string id = 1;
+    string first_name = 2;
+    string last_name = 3;
+    string email = 4;
+    repeated Post posts = 5;
+    string created_at = 6;
+    string updated_at = 7;
+    string password = 8;
+}
+message EmailReq {
+    string email = 1;
+}
