@@ -1,0 +1,624 @@
+definitions:
+  models.CommentRequest:
+    properties:
+      post_id:
+        type: integer
+      text:
+        type: string
+      user_id:
+        type: string
+    type: object
+  models.CommentResponse:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      post_id:
+        type: integer
+      post_title:
+        type: string
+      post_user_name:
+        type: string
+      text:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: string
+      user_name:
+        type: string
+    type: object
+  models.Comments:
+    properties:
+      comments:
+        items:
+          $ref: '#/definitions/models.CommentResponse'
+        type: array
+    type: object
+  models.Empty:
+    type: object
+  models.Error:
+    properties:
+      message:
+        type: string
+    type: object
+  models.GetPostResponse:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      likes:
+        type: integer
+      post_comments:
+        items:
+          $ref: '#/definitions/models.Comments'
+        type: array
+      title:
+        type: string
+      updated_at:
+        type: string
+      user_email:
+        type: string
+      user_id:
+        type: string
+      user_name:
+        type: string
+    type: object
+  models.LoginResponse:
+    properties:
+      accsee_token:
+        type: string
+      created_at:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: string
+      last_name:
+        type: string
+      password:
+        type: string
+      refresh_token:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.PostRequest:
+    properties:
+      description:
+        type: string
+      title:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  models.Posts:
+    properties:
+      posts:
+        items:
+          $ref: '#/definitions/models.GetPostResponse'
+        type: array
+    type: object
+  models.RegisterUserModel:
+    properties:
+      code:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  models.StandardErrorModel:
+    properties:
+      error:
+        $ref: '#/definitions/models.Error'
+    type: object
+  models.UpdatePostReq:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      title:
+        type: string
+    type: object
+  models.UpdateUserReq:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: string
+      last_name:
+        type: string
+    type: object
+  models.User:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: string
+      last_name:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.Users:
+    properties:
+      users:
+        items:
+          $ref: '#/definitions/models.User'
+        type: array
+    type: object
+  models.VerifyResponse:
+    properties:
+      accsee_token:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: string
+      last_name:
+        type: string
+      password:
+        type: string
+      refresh_token:
+        type: string
+    type: object
+host: localhost:5050
+info:
+  contact: {}
+  title: Some-Title
+  version: "1.0"
+paths:
+  /v1/comment/:
+    post:
+      consumes:
+      - application/json
+      description: This API for creating a new Comment
+      parameters:
+      - description: CommentRequest
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.CommentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CommentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+      summary: CreateComment
+      tags:
+      - Comment
+  /v1/comment/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: This API for deleting Comment
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CommentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+      summary: Delete Comment
+      tags:
+      - Comment
+    get:
+      consumes:
+      - application/json
+      description: This API for getting Comments detail
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Comments'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+      summary: GetComments
+      tags:
+      - Comment
+  /v1/login/{email}/{password}:
+    get:
+      consumes:
+      - application/json
+      description: This function get login user
+      parameters:
+      - description: email
+        in: path
+        name: email
+        required: true
+        type: string
+      - description: password
+        in: path
+        name: password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Login User
+      tags:
+      - Register
+  /v1/post:
+    post:
+      consumes:
+      - application/json
+      description: This API for creating a new post
+      parameters:
+      - description: postRequest
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.PostRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetPostResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+      summary: CreatePost
+      tags:
+      - Post
+  /v1/post/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: This API for deleting Post
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetPostResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+      summary: Delete Post
+      tags:
+      - Post
+    get:
+      consumes:
+      - application/json
+      description: This API for getting Post detail
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GetPostResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+      summary: GetPost
+      tags:
+      - Post
+    put:
+      consumes:
+      - application/json
+      description: This API for updating Post
+      parameters:
+      - description: UpdatePostReq
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdatePostReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Empty'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+      summary: Update Post
+      tags:
+      - Post
+  /v1/posts/{id}:
+    get:
+      consumes:
+      - application/json
+      description: This API for getting posts by user id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Posts'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+      summary: GetPostByUserId
+      tags:
+      - Post
+  /v1/user:
+    get:
+      consumes:
+      - application/json
+      description: This API for getting user detail
+      parameters:
+      - description: uuid
+        in: path
+        name: uuid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+      summary: GetUser
+      tags:
+      - user
+  /v1/user/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: This API for deleting user
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+      summary: Delete User
+      tags:
+      - user
+    put:
+      consumes:
+      - application/json
+      description: This API for updating user
+      parameters:
+      - description: UpdateUsersReq
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateUserReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Empty'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+      summary: Update User
+      tags:
+      - user
+  /v1/user/register:
+    post:
+      consumes:
+      - application/json
+      description: this registers user
+      parameters:
+      - description: Register user
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.RegisterUserModel'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: register user
+      tags:
+      - Register
+  /v1/users/:
+    get:
+      consumes:
+      - application/json
+      description: This API for getting all users
+      parameters:
+      - description: limit
+        in: path
+        name: limit
+        required: true
+        type: integer
+      - description: page
+        in: path
+        name: page
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Users'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.StandardErrorModel'
+      summary: GetAllUsers
+      tags:
+      - user
+  /v1/verify/{email}/{code}:
+    get:
+      consumes:
+      - application/json
+      description: Verifys user
+      parameters:
+      - description: email
+        in: path
+        name: email
+        required: true
+        type: string
+      - description: code
+        in: path
+        name: code
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.VerifyResponse'
+      summary: Verify user
+      tags:
+      - Register
+swagger: "2.0"
