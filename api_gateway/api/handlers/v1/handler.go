@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"strings"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
@@ -60,7 +59,7 @@ func GetClaims(h *handlerV1, c *gin.Context) jwt.MapClaims {
 		return nil
 	}
 
-	authorization.Token = strings.TrimSpace(strings.Trim(authorization.Token, "Bearer"))
+	// authorization.Token = strings.TrimSpace(strings.Trim(authorization.Token, "Bearer"))
 
 	h.jwthandler.Token = authorization.Token
 	claims, err = h.jwthandler.ExtractClaims()

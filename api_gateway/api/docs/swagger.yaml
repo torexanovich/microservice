@@ -40,8 +40,11 @@ definitions:
     type: object
   models.Error:
     properties:
-      message:
+      code:
+        type: integer
+      description:
         type: string
+      error: {}
     type: object
   models.GetPostResponse:
     properties:
@@ -120,11 +123,6 @@ definitions:
       username:
         type: string
     type: object
-  models.StandardErrorModel:
-    properties:
-      error:
-        $ref: '#/definitions/models.Error'
-    type: object
   models.UpdatePostReq:
     properties:
       description:
@@ -184,12 +182,85 @@ definitions:
       refresh_token:
         type: string
     type: object
+  user.GetAdminRes:
+    properties:
+      access_token:
+        type: string
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  user.GetModeratorRes:
+    properties:
+      access_token:
+        type: string
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      updated_at:
+        type: string
+    type: object
 host: localhost:5050
 info:
-  contact: {}
-  title: Some-Title
-  version: "1.0"
+  contact:
+    email: torexanovich.l@gmail.com
+    name: Amirkhan
+    url: https://t.me/torexanovich
+  description: Some description
+  termsOfService: Golang
+  title: Mind-Blow
+  version: "2.0"
 paths:
+  /v1/admin/login/{admin_name}/{password}:
+    get:
+      consumes:
+      - application/json
+      description: Login admin
+      parameters:
+      - description: admin_name
+        in: path
+        name: admin_name
+        required: true
+        type: string
+      - description: password
+        in: path
+        name: password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.GetAdminRes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Login admin
+      tags:
+      - Admins
   /v1/comment/:
     post:
       consumes:
@@ -212,7 +283,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/models.StandardErrorModel'
+            $ref: '#/definitions/models.Error'
       summary: CreateComment
       tags:
       - Comment
@@ -237,11 +308,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/models.StandardErrorModel'
+            $ref: '#/definitions/models.Error'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/models.StandardErrorModel'
+            $ref: '#/definitions/models.Error'
       summary: Delete Comment
       tags:
       - Comment
@@ -265,11 +336,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/models.StandardErrorModel'
+            $ref: '#/definitions/models.Error'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/models.StandardErrorModel'
+            $ref: '#/definitions/models.Error'
       summary: GetComments
       tags:
       - Comment
@@ -307,6 +378,40 @@ paths:
       summary: Login User
       tags:
       - Register
+  /v1/moderator/login/{name}/{password}:
+    get:
+      consumes:
+      - application/json
+      description: Login moderator
+      parameters:
+      - description: name
+        in: path
+        name: name
+        required: true
+        type: string
+      - description: password
+        in: path
+        name: password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.GetModeratorRes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      summary: Login moderator
+      tags:
+      - Admins
   /v1/post:
     post:
       consumes:
@@ -329,7 +434,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/models.StandardErrorModel'
+            $ref: '#/definitions/models.Error'
       summary: CreatePost
       tags:
       - Post
@@ -354,11 +459,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/models.StandardErrorModel'
+            $ref: '#/definitions/models.Error'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/models.StandardErrorModel'
+            $ref: '#/definitions/models.Error'
       summary: Delete Post
       tags:
       - Post
@@ -382,11 +487,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/models.StandardErrorModel'
+            $ref: '#/definitions/models.Error'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/models.StandardErrorModel'
+            $ref: '#/definitions/models.Error'
       summary: GetPost
       tags:
       - Post
@@ -411,11 +516,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/models.StandardErrorModel'
+            $ref: '#/definitions/models.Error'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/models.StandardErrorModel'
+            $ref: '#/definitions/models.Error'
       summary: Update Post
       tags:
       - Post
@@ -440,11 +545,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/models.StandardErrorModel'
+            $ref: '#/definitions/models.Error'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/models.StandardErrorModel'
+            $ref: '#/definitions/models.Error'
       summary: GetPostByUserId
       tags:
       - Post
@@ -469,11 +574,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/models.StandardErrorModel'
+            $ref: '#/definitions/models.Error'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/models.StandardErrorModel'
+            $ref: '#/definitions/models.Error'
       summary: GetUser
       tags:
       - user
@@ -498,11 +603,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/models.StandardErrorModel'
+            $ref: '#/definitions/models.Error'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/models.StandardErrorModel'
+            $ref: '#/definitions/models.Error'
       summary: Delete User
       tags:
       - user
@@ -527,11 +632,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/models.StandardErrorModel'
+            $ref: '#/definitions/models.Error'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/models.StandardErrorModel'
+            $ref: '#/definitions/models.Error'
       summary: Update User
       tags:
       - user
@@ -587,11 +692,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/models.StandardErrorModel'
+            $ref: '#/definitions/models.Error'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/models.StandardErrorModel'
+            $ref: '#/definitions/models.Error'
       summary: GetAllUsers
       tags:
       - user
@@ -621,4 +726,9 @@ paths:
       summary: Verify user
       tags:
       - Register
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

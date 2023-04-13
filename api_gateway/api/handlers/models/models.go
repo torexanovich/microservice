@@ -42,33 +42,7 @@ type SearchUsers struct {
 type Empty struct {
 }
 
-type RegisterUserModel struct {
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
-	UserName  string `json:"username"`
-	Email     string `json:"email"`
-	Password  string `json:"password"`
-	Code      string `json:"code"`
-}
 
-type VerifyResponse struct {
-	Id           string `json:"id"`
-	FirstName    string `json:"first_name"`
-	LastName     string `json:"last_name"`
-	Email        string `json:"email"`
-	Password     string `json:"password"`
-	AccessToken  string `json:"accsee_token"`
-	RefreshToken string `json:"refresh_token"`
-}
-
-type UserLogin struct{
-	FirstName    string `json:"first_name"`
-	LastName     string `json:"last_name"`
-	Email        string `json:"email"`
-	Password     string `json:"password"`
-	AccessToken  string `json:"accsee_token"`
-	RefreshToken string `json:"refresh_token"`
-}
 // post
 
 type PostRequest struct {
@@ -137,6 +111,28 @@ type Comments struct {
 	Comments []CommentResponse `json:"comments"`
 }
 
+// register
+
+
+type RegisterUserModel struct {
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	UserName  string `json:"username"`
+	Email     string `json:"email"`
+	Password  string `json:"password"`
+	Code      string `json:"code"`
+}
+
+type VerifyResponse struct {
+	Id           string `json:"id"`
+	FirstName    string `json:"first_name"`
+	LastName     string `json:"last_name"`
+	Email        string `json:"email"`
+	Password     string `json:"password"`
+	AccessToken  string `json:"accsee_token"`
+	RefreshToken string `json:"refresh_token"`
+}
+
 type LoginResponse struct{
 	Id           string `json:"id"`
 	FirstName    string `json:"first_name"`
@@ -152,3 +148,6 @@ type LoginResponse struct{
 type GetProfileByJwtRequest struct {
 	Token string `header:"Authorization"`
 }
+
+// 
+

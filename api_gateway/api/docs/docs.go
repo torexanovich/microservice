@@ -10,12 +10,68 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "contact": {},
+        "termsOfService": "Golang",
+        "contact": {
+            "name": "Amirkhan",
+            "url": "https://t.me/torexanovich",
+            "email": "torexanovich.l@gmail.com"
+        },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/v1/admin/login/{admin_name}/{password}": {
+            "get": {
+                "description": "Login admin",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admins"
+                ],
+                "summary": "Login admin",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "admin_name",
+                        "name": "admin_name",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "password",
+                        "name": "password",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/user.GetAdminRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/comment/": {
             "post": {
                 "description": "This API for creating a new Comment",
@@ -50,7 +106,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/models.StandardErrorModel"
+                            "$ref": "#/definitions/models.Error"
                         }
                     }
                 }
@@ -88,13 +144,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/models.StandardErrorModel"
+                            "$ref": "#/definitions/models.Error"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/models.StandardErrorModel"
+                            "$ref": "#/definitions/models.Error"
                         }
                     }
                 }
@@ -130,13 +186,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/models.StandardErrorModel"
+                            "$ref": "#/definitions/models.Error"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/models.StandardErrorModel"
+                            "$ref": "#/definitions/models.Error"
                         }
                     }
                 }
@@ -193,6 +249,57 @@ const docTemplate = `{
                 }
             }
         },
+        "/v1/moderator/login/{name}/{password}": {
+            "get": {
+                "description": "Login moderator",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Admins"
+                ],
+                "summary": "Login moderator",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "name",
+                        "name": "name",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "password",
+                        "name": "password",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/user.GetModeratorRes"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.Error"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/post": {
             "post": {
                 "description": "This API for creating a new post",
@@ -227,7 +334,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/models.StandardErrorModel"
+                            "$ref": "#/definitions/models.Error"
                         }
                     }
                 }
@@ -265,13 +372,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/models.StandardErrorModel"
+                            "$ref": "#/definitions/models.Error"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/models.StandardErrorModel"
+                            "$ref": "#/definitions/models.Error"
                         }
                     }
                 }
@@ -309,13 +416,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/models.StandardErrorModel"
+                            "$ref": "#/definitions/models.Error"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/models.StandardErrorModel"
+                            "$ref": "#/definitions/models.Error"
                         }
                     }
                 }
@@ -351,13 +458,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/models.StandardErrorModel"
+                            "$ref": "#/definitions/models.Error"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/models.StandardErrorModel"
+                            "$ref": "#/definitions/models.Error"
                         }
                     }
                 }
@@ -395,13 +502,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/models.StandardErrorModel"
+                            "$ref": "#/definitions/models.Error"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/models.StandardErrorModel"
+                            "$ref": "#/definitions/models.Error"
                         }
                     }
                 }
@@ -439,13 +546,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/models.StandardErrorModel"
+                            "$ref": "#/definitions/models.Error"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/models.StandardErrorModel"
+                            "$ref": "#/definitions/models.Error"
                         }
                     }
                 }
@@ -525,13 +632,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/models.StandardErrorModel"
+                            "$ref": "#/definitions/models.Error"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/models.StandardErrorModel"
+                            "$ref": "#/definitions/models.Error"
                         }
                     }
                 }
@@ -567,13 +674,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/models.StandardErrorModel"
+                            "$ref": "#/definitions/models.Error"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/models.StandardErrorModel"
+                            "$ref": "#/definitions/models.Error"
                         }
                     }
                 }
@@ -618,13 +725,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/models.StandardErrorModel"
+                            "$ref": "#/definitions/models.Error"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/models.StandardErrorModel"
+                            "$ref": "#/definitions/models.Error"
                         }
                     }
                 }
@@ -734,9 +841,13 @@ const docTemplate = `{
         "models.Error": {
             "type": "object",
             "properties": {
-                "message": {
+                "code": {
+                    "type": "integer"
+                },
+                "description": {
                     "type": "string"
-                }
+                },
+                "error": {}
             }
         },
         "models.GetPostResponse": {
@@ -857,14 +968,6 @@ const docTemplate = `{
                 }
             }
         },
-        "models.StandardErrorModel": {
-            "type": "object",
-            "properties": {
-                "error": {
-                    "$ref": "#/definitions/models.Error"
-                }
-            }
-        },
         "models.UpdatePostReq": {
             "type": "object",
             "properties": {
@@ -955,18 +1058,77 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        },
+        "user.GetAdminRes": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "user.GetModeratorRes": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "1.0",
+	Version:          "2.0",
 	Host:             "localhost:5050",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "Some-Title",
-	Description:      "",
+	Title:            "Mind-Blow",
+	Description:      "Some description",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }

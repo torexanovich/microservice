@@ -24,9 +24,21 @@ type Option struct {
 	CasbinEnforcer  *casbin.Enforcer
 }
 
-// @title Some-Title
-// @version 1.0
-// @host localhost:5050
+// New ...
+// @title           Mind-Blow
+// @version         2.0
+// @description     Some description
+// @termsOfService  Golang
+
+// @contact.name   Amirkhan
+// @contact.url    https://t.me/torexanovich
+// @contact.email  torexanovich.l@gmail.com
+
+// @host    	   localhost:5050
+
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
 func New(option Option) *gin.Engine {
 	router := gin.New()
 
@@ -80,6 +92,10 @@ func New(option Option) *gin.Engine {
 	api.POST("/user/register", handlerV1.RegisterUser)
 	api.GET("/verify/:email/:code", handlerV1.VerifyUser)
 	api.GET("/login/:email/:password", handlerV1.Login)
+
+	// admin
+	api.GET("/admin/login/:admin_name/:password", handlerV1.LoginAdmin)
+	api.GET("/moderator/login/:name/:password", handlerV1.LoginModerator)
 
 	// swagger
 	url := ginSwagger.URL("swagger/doc.json")

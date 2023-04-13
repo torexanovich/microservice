@@ -197,7 +197,7 @@ func (h *handlerV1) VerifyUser(c *gin.Context) {
 	h.jwthandler.Iss = "user"
 	h.jwthandler.Sub = body.Id
 	h.jwthandler.Role = "authorized"
-	h.jwthandler.Aud = []string{"exam-app"}
+	h.jwthandler.Aud = []string{"some-app-name"}
 	h.jwthandler.SigninKey = h.cfg.SignInKey
 	h.jwthandler.Log = h.log
 	tokens, err := h.jwthandler.GenerateAuthJWT()

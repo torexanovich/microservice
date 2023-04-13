@@ -19,7 +19,7 @@ import (
 // @Produce  json
 // @Param body body models.CommentRequest true "CommentRequest"
 // @Success 200 {object} models.CommentResponse
-// @Failure 400 {object} models.StandardErrorModel
+// @Failure 400 {object} models.Error
 // @Router /v1/comment/ [post]
 func (h *handlerV1) CreateComment(c *gin.Context) {
 	var (
@@ -63,8 +63,8 @@ func (h *handlerV1) CreateComment(c *gin.Context) {
 // @Produce  json
 // @Param id path int true "id"
 // @Success 200 {object} models.Comments
-// @Failure 400 {object} models.StandardErrorModel
-// @Failure 500 {object} models.StandardErrorModel
+// @Failure 400 {object} models.Error
+// @Failure 500 {object} models.Error
 // @Router /v1/comment/{id} [get]
 func (h *handlerV1) GetCommentsForPost(c *gin.Context) {
 	var jspbMarshal protojson.MarshalOptions
@@ -99,8 +99,8 @@ func (h *handlerV1) GetCommentsForPost(c *gin.Context) {
 // @Produce  json
 // @Param id path int true "Id"
 // @Success 200 {object} models.CommentResponse
-// @Failure 400 {object} models.StandardErrorModel
-// @Failure 500 {object} models.StandardErrorModel
+// @Failure 400 {object} models.Error
+// @Failure 500 {object} models.Error
 // @Router /v1/comment/{id} [delete]
 func (h *handlerV1) DeleteComment(c *gin.Context) {
 	jspbMarshal := protojson.MarshalOptions{}

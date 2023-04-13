@@ -1,12 +1,12 @@
 package models
 
-// Error ...
 type Error struct {
-	Message string `json:"message"`
+	Code        int
+	Error       error
+	Description string
 }
 
-// StandardErrorModel ...
-type StandardErrorModel struct {
-	Error Error `json:"error"`
+type SuccessInfo struct {
+	Message    string `json:"message"`
+	StatusCode int    `json:"status_code"`
 }
-

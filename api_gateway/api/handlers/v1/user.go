@@ -20,7 +20,7 @@ import (
 // // @Produce  json
 // // @Param body body models.UserRequest true "UserRequest"
 // // @Success 200 {object} models.User
-// // @Failure 400 {object} models.StandardErrorModel
+// // @Failure 400 {object} models.Error
 // // @Router /v1/user/ [post]
 // func (h *handlerV1) CreateUser(c *gin.Context) {
 // 	var (
@@ -58,8 +58,8 @@ import (
 // @Produce  json
 // @Param uuid path string true "uuid"
 // @Success 200 {object} models.User
-// @Failure 400 {object} models.StandardErrorModel
-// @Failure 500 {object} models.StandardErrorModel
+// @Failure 400 {object} models.Error
+// @Failure 500 {object} models.Error
 // @Router /v1/user [get]
 func (h *handlerV1) GetUser(c *gin.Context) {
 	var jspbMarshal protojson.MarshalOptions
@@ -90,8 +90,8 @@ func (h *handlerV1) GetUser(c *gin.Context) {
 // @Param limit path int true "limit"
 // @Param page path int true "page"
 // @Success 200 {object} models.Users
-// @Failure 400 {object} models.StandardErrorModel
-// @Failure 500 {object} models.StandardErrorModel
+// @Failure 400 {object} models.Error
+// @Failure 500 {object} models.Error
 // @Router /v1/users/ [get]
 func (h *handlerV1) GetAllUsers(c *gin.Context) {
 	queryParams := c.Request.URL.Query()
@@ -127,8 +127,8 @@ func (h *handlerV1) GetAllUsers(c *gin.Context) {
 // @Produce  json
 // @Param body body models.UpdateUserReq true "UpdateUsersReq"
 // @Success 200 {object} models.Empty
-// @Failure 400 {object} models.StandardErrorModel
-// @Failure 500 {object} models.StandardErrorModel
+// @Failure 400 {object} models.Error
+// @Failure 500 {object} models.Error
 // @Router /v1/user/{id} [put]
 func (h *handlerV1) UpdateUser(c *gin.Context) {
 	var (
@@ -170,8 +170,8 @@ func (h *handlerV1) UpdateUser(c *gin.Context) {
 // @Produce  json
 // @Param id path string true "Id"
 // @Success 200 {object} models.User
-// @Failure 400 {object} models.StandardErrorModel
-// @Failure 500 {object} models.StandardErrorModel
+// @Failure 400 {object} models.Error
+// @Failure 500 {object} models.Error
 // @Router /v1/user/{id} [delete]
 func (h *handlerV1) DeleteUser(c *gin.Context) {
 	id := c.Param("id")

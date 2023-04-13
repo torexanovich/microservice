@@ -83,6 +83,10 @@ func (a *JWTRoleAuthorizer) GetRole(r *http.Request) (string, error) {
 
 	if claims["role"].(string) == "authorized" {
 		role = "authorized"
+	} else if claims["role"].(string) == "admin" {
+		role = "admin"
+	} else if claims["role"].(string) == "moderator" {
+		role = "moderator"
 	} else {
 		role = "unknown"
 	}

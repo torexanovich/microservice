@@ -20,7 +20,7 @@ import (
 // @Produce  json
 // @Param body body models.PostRequest true "postRequest"
 // @Success 200 {object} models.GetPostResponse
-// @Failure 400 {object} models.StandardErrorModel
+// @Failure 400 {object} models.Error
 // @Router /v1/post [post]
 func (h *handlerV1) CreatePost(c *gin.Context) {
 	var (
@@ -62,8 +62,8 @@ func (h *handlerV1) CreatePost(c *gin.Context) {
 // @Produce  json
 // @Param id path int true "id"
 // @Success 200 {object} models.GetPostResponse
-// @Failure 400 {object} models.StandardErrorModel
-// @Failure 500 {object} models.StandardErrorModel
+// @Failure 400 {object} models.Error
+// @Failure 500 {object} models.Error
 // @Router /v1/post/{id} [get]
 func (h *handlerV1) GetPost(c *gin.Context) {
 	var jspbMarshal protojson.MarshalOptions
@@ -99,8 +99,8 @@ func (h *handlerV1) GetPost(c *gin.Context) {
 // @Produce  json
 // @Param id path int true "id"
 // @Success 200 {object} models.Posts
-// @Failure 400 {object} models.StandardErrorModel
-// @Failure 500 {object} models.StandardErrorModel
+// @Failure 400 {object} models.Error
+// @Failure 500 {object} models.Error
 // @Router /v1/posts/{id} [get]
 func (h *handlerV1) GetPostByUserId(c *gin.Context) {
 	var jspbMarshal protojson.MarshalOptions
@@ -127,8 +127,8 @@ func (h *handlerV1) GetPostByUserId(c *gin.Context) {
 // @Produce  json
 // @Param body body models.UpdatePostReq true "UpdatePostReq"
 // @Success 200 {object} models.Empty
-// @Failure 400 {object} models.StandardErrorModel
-// @Failure 500 {object} models.StandardErrorModel
+// @Failure 400 {object} models.Error
+// @Failure 500 {object} models.Error
 // @Router /v1/post/{id} [put]
 func (h *handlerV1) UpdatePost(c *gin.Context) {
 	var (
@@ -169,8 +169,8 @@ func (h *handlerV1) UpdatePost(c *gin.Context) {
 // @Produce  json
 // @Param id path int true "Id"
 // @Success 200 {object} models.GetPostResponse
-// @Failure 400 {object} models.StandardErrorModel
-// @Failure 500 {object} models.StandardErrorModel
+// @Failure 400 {object} models.Error
+// @Failure 500 {object} models.Error
 // @Router /v1/post/{id} [delete]
 func (h *handlerV1) DeletePost(c *gin.Context) {
 	var jspbMarshal protojson.MarshalOptions
