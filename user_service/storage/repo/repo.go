@@ -3,7 +3,7 @@ package repo
 import (
 	u "gitlab.com/micro/user_service/genproto/user"
 )
-
+ 
 type UserStoreI interface {
 	CreateUser(*u.UserRequest) (*u.UserResponse, error)
 	GetUserById(*u.IdRequest) (*u.UserResponse, error)
@@ -14,4 +14,6 @@ type UserStoreI interface {
 	DeleteUser(*u.IdRequest) (*u.UserResponse, error)
 	CheckField(*u.CheckFieldReq) (*u.CheckFieldResp, error)
 	GetByEmail(*u.EmailReq) (*u.UserResponse, error)
+	GetAdmin(*u.GetAdminReq) (*u.GetAdminRes, error)
+	GetModerator(*u.GetModeratorReq) (*u.GetModeratorRes, error)
 }

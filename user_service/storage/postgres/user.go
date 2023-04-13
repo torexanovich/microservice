@@ -1,6 +1,7 @@
 package postgres
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"time"
@@ -222,5 +223,66 @@ func (r *UserRepo) GetByEmail(req *u.EmailReq) (*u.UserResponse, error) {
 		return &u.UserResponse{}, err
 	}
 
+	return &res, nil
+}
+
+
+func (r *UserRepo) GetAdmin(req *u.GetAdminReq) (*u.GetAdminRes, error) {
+	var res u.GetAdminRes
+		err := r.db.QueryRow(`
+		SELECT 
+			id,
+			admin_name,
+			admin_password, 
+			created_at, 
+			updated_at
+		FROM 
+			admin 
+		WHERE 
+			deleted_at 
+			IS NULL AND 
+			admin_name=$1`, req.Name).Scan(
+		&res.Id,
+		&res.Name,
+		&res.Password,
+		&res.CreatedAt,
+		&res.UpdatedAt,	
+	)
+
+	if err == sql.ErrNoRows {
+		fmt.Println("Error while getting admin no rows")
+		return &res, nil
+	}
+	if err != nil {
+		return &u.GetAdminRes{}, err
+	}
+	return &res, nil
+}
+
+func (r *UserRepo) GetModerator(req *u.GetModeratorReq) (*u.GetModeratorRes, error) {
+	res := u.GetModeratorRes{}
+	err := r.db.QueryRow(`SELECT 
+			id, 
+			name, 
+			password,
+			created_at,
+			updated_at
+		FROM 
+			moderator
+		WHERE deleted_at IS NULL AND name=$1`, req.Name).Scan(
+		&res.Id,
+		&res.Name,
+		&res.Password,
+		&res.CreatedAt,
+		&res.UpdatedAt)
+
+	if err == sql.ErrNoRows {
+		fmt.Println("Error while getting admin no rows")
+		return &res, nil
+	}
+	if err != nil {
+		fmt.Println("error while getting moderator")
+		return &u.GetModeratorRes{}, err
+	}
 	return &res, nil
 }

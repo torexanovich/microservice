@@ -15,7 +15,40 @@ service UserService{
     rpc CheckField (CheckFieldReq) returns (CheckFieldResp) {}
     rpc Login(LoginReq) returns (LoginResp) {}
     rpc GetByEmail(EmailReq) returns (UserResponse) {}
+    rpc GetAdmin (GetAdminReq) returns (GetAdminRes) {}
+    rpc GetModerator (GetModeratorReq) returns (GetModeratorRes);
 }
+
+message GetAdminReq {
+    string name = 1;
+    string password = 2;
+}
+
+message GetAdminRes {
+    string name = 1;
+    string password = 2;
+    string id = 3;
+    string access_token = 4;
+    string created_at = 5;
+    string updated_at = 6;
+    string deleted_at = 7;
+}
+
+message GetModeratorReq {
+    string name = 1;
+    string password = 2;
+}
+
+message GetModeratorRes {
+    string name = 1;
+    string password = 2;
+    string id = 3;
+    string access_token = 4;
+    string created_at = 5;
+    string updated_at = 6;
+    string deleted_at = 7;
+}
+
 
 message UserRequest{
     string first_name = 1;

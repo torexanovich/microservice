@@ -330,3 +330,23 @@ func (s *UserService) GetByEmail(ctx context.Context, req *u.EmailReq) (*u.UserR
 
 	return res, nil
 }
+
+func (s *UserService) GetAdmin(ctx context.Context, req *u.GetAdminReq) (*u.GetAdminRes, error) {
+	res, err := s.storage.User().GetAdmin(req) 
+	if err != nil {
+		s.Logger.Error("Error while getting admin:", logger.Any("get", err))
+		return &u.GetAdminRes{}, status.Error(codes.NotFound, "Your are not admin")
+	}
+
+	return res, nil
+}
+
+func (s *UserService) GetModerator(ctx context.Context, req *u.GetModeratorReq) (*u.GetModeratorRes, error) {
+	res, err := s.storage.User().GetModerator(req) 
+	if err != nil {
+		s.Logger.Error("Error while getting moderator:", logger.Any("get", err))
+		return &u.GetModeratorRes{}, status.Error(codes.NotFound, "Your are not moderator")
+	}
+
+	return res, nil
+}
