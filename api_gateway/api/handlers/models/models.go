@@ -1,5 +1,15 @@
 package models
 
+type UserRedis struct {
+	Code string `json:"code"`
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	UserType  string `json:"user_type"`
+	Email     string `json:"email"`
+	Password string `json:"password"`
+	Id string `json:"id"`
+}
+
 type UserRequest struct {
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
@@ -10,13 +20,14 @@ type UpdateUserReq struct {
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 	Email     string `json:"email"`
-	Id        string  `json:"id"`
+	Id        string `json:"id"`
 }
 
 type User struct {
-	Id        string  `json:"id"`
+	Id        string `json:"id"`
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
+	UserType  string `json:"user_type"`
 	Email     string `json:"email"`
 	CreatedAt string `json:"created_at"`
 	UpdatedAt string `json:"updated_at"`
@@ -42,7 +53,6 @@ type SearchUsers struct {
 type Empty struct {
 }
 
-
 // post
 
 type PostRequest struct {
@@ -53,7 +63,7 @@ type PostRequest struct {
 
 type GetPostResponse struct {
 	Id           int64      `json:"id"`
-	UserId       string      `json:"user_id"`
+	UserId       string     `json:"user_id"`
 	Title        string     `json:"title"`
 	Description  string     `json:"description"`
 	Likes        int64      `json:"likes"`
@@ -86,14 +96,14 @@ type LikeRequest struct {
 // Comment
 
 type CommentRequest struct {
-	UserId string  `json:"user_id"`
+	UserId string `json:"user_id"`
 	PostId int64  `json:"post_id"`
 	Text   string `json:"text"`
 }
 
 type CommentResponse struct {
 	Id           int    `json:"id"`
-	UserId       string  `json:"user_id"`
+	UserId       string `json:"user_id"`
 	PostId       int64  `json:"post_id"`
 	Text         string `json:"text"`
 	PostTitle    string `json:"post_title"`
@@ -112,7 +122,6 @@ type Comments struct {
 }
 
 // register
-
 
 type RegisterUserModel struct {
 	FirstName string `json:"first_name"`
@@ -133,7 +142,7 @@ type VerifyResponse struct {
 	RefreshToken string `json:"refresh_token"`
 }
 
-type LoginResponse struct{
+type LoginResponse struct {
 	Id           string `json:"id"`
 	FirstName    string `json:"first_name"`
 	LastName     string `json:"last_name"`
@@ -141,13 +150,12 @@ type LoginResponse struct{
 	Password     string `json:"password"`
 	AccessToken  string `json:"accsee_token"`
 	RefreshToken string `json:"refresh_token"`
-	CreatedAt string `json:"created_at"`
-	UpdatedAt string `json:"updated_at"`
+	CreatedAt    string `json:"created_at"`
+	UpdatedAt    string `json:"updated_at"`
 }
 
 type GetProfileByJwtRequest struct {
 	Token string `header:"Authorization"`
 }
 
-// 
-
+//

@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"net" 
+	"net"
 
 	"gitlab.com/micro/post_service/config"
 	p "gitlab.com/micro/post_service/genproto/post"
+	"gitlab.com/micro/post_service/kafka"
 	"gitlab.com/micro/post_service/pkg/db"
 	"gitlab.com/micro/post_service/pkg/logger"
 	"gitlab.com/micro/post_service/service"
@@ -22,9 +23,12 @@ func main() {
 
 	connDb, err := db.ConnectToDB(cfg)
 	if err != nil {
-		fmt.Println("failed connect database", err)
+		fmt.Println("failed to connect database", err)
 	}
 
+	NewUser := kafka.NewKafkaConsumer(connDb, &cfg, log, "user")
+	go NewUser.Start()
+	
 	grpcClient, err := grpcclient.New(cfg)
 	if err != nil {
 		fmt.Println("failed while grpc client", err.Error())
@@ -40,7 +44,6 @@ func main() {
 	s := grpc.NewServer()
 	reflection.Register(s)
 	p.RegisterPostServiceServer(s, postService)
-
 	log.Info("main: server running",
 		logger.String("port", cfg.PostServicePort))
 	if err := s.Serve(lis); err != nil {

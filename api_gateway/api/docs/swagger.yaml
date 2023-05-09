@@ -92,6 +92,15 @@ definitions:
       updated_at:
         type: string
     type: object
+  models.Policy:
+    properties:
+      action:
+        type: string
+      domain:
+        type: string
+      user:
+        type: string
+    type: object
   models.PostRequest:
     properties:
       description:
@@ -122,6 +131,13 @@ definitions:
         type: string
       username:
         type: string
+    type: object
+  models.UpdatePol:
+    properties:
+      new:
+        $ref: '#/definitions/models.Policy'
+      old:
+        $ref: '#/definitions/models.Policy'
     type: object
   models.UpdatePostReq:
     properties:
@@ -157,6 +173,8 @@ definitions:
         type: string
       updated_at:
         type: string
+      user_type:
+        type: string
     type: object
   models.Users:
     properties:
@@ -182,40 +200,6 @@ definitions:
       refresh_token:
         type: string
     type: object
-  user.GetAdminRes:
-    properties:
-      access_token:
-        type: string
-      created_at:
-        type: string
-      deleted_at:
-        type: string
-      id:
-        type: string
-      name:
-        type: string
-      password:
-        type: string
-      updated_at:
-        type: string
-    type: object
-  user.GetModeratorRes:
-    properties:
-      access_token:
-        type: string
-      created_at:
-        type: string
-      deleted_at:
-        type: string
-      id:
-        type: string
-      name:
-        type: string
-      password:
-        type: string
-      updated_at:
-        type: string
-    type: object
 host: localhost:5050
 info:
   contact:
@@ -227,20 +211,140 @@ info:
   title: Mind-Blow
   version: "2.0"
 paths:
-  /v1/admin/login/{admin_name}/{password}:
+  /v1/admin/add/policy:
+    post:
+      consumes:
+      - application/json
+      description: Add policy for user
+      parameters:
+      - description: Policy
+        in: body
+        name: policy
+        required: true
+        schema:
+          $ref: '#/definitions/models.Policy'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - BearerAuth: []
+      summary: Add Policy User
+      tags:
+      - Admin
+  /v1/admin/create_mod/{id}:
+    patch:
+      consumes:
+      - application/json
+      description: create mod by user id
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - BearerAuth: []
+      summary: create mod
+      tags:
+      - Admin
+  /v1/admin/get/policy:
     get:
       consumes:
       - application/json
-      description: Login admin
+      description: Get policy for user
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - BearerAuth: []
+      summary: Get Policy User
+      tags:
+      - Admin
+  /v1/admin/register:
+    post:
+      consumes:
+      - application/json
+      description: this registers admin
       parameters:
-      - description: admin_name
+      - description: Register admin
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.RegisterUserModel'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.User'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Error'
+      security:
+      - BearerAuth: []
+      summary: register admin
+      tags:
+      - Admin
+  /v1/admin/remove/policy:
+    post:
+      consumes:
+      - application/json
+      description: Remove policy for user
+      parameters:
+      - description: Policy
+        in: body
+        name: policy
+        required: true
+        schema:
+          $ref: '#/definitions/models.Policy'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - BearerAuth: []
+      summary: Remove Policy User
+      tags:
+      - Admin
+  /v1/admin/update/policy:
+    put:
+      consumes:
+      - application/json
+      description: Update policy for user
+      parameters:
+      - description: Policy
+        in: body
+        name: policy
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdatePol'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - BearerAuth: []
+      summary: Update Policy User
+      tags:
+      - Admin
+  /v1/admin/verify/{email}/{code}:
+    get:
+      consumes:
+      - application/json
+      description: Verify admin
+      parameters:
+      - description: email
         in: path
-        name: admin_name
+        name: email
         required: true
         type: string
-      - description: password
+      - description: code
         in: path
-        name: password
+        name: code
         required: true
         type: string
       produces:
@@ -249,18 +353,12 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/user.GetAdminRes'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.Error'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.Error'
-      summary: Login admin
+            $ref: '#/definitions/models.VerifyResponse'
+      security:
+      - BearerAuth: []
+      summary: Verify admin
       tags:
-      - Admins
+      - Admin
   /v1/comment/:
     post:
       consumes:
@@ -378,40 +476,6 @@ paths:
       summary: Login User
       tags:
       - Register
-  /v1/moderator/login/{name}/{password}:
-    get:
-      consumes:
-      - application/json
-      description: Login moderator
-      parameters:
-      - description: name
-        in: path
-        name: name
-        required: true
-        type: string
-      - description: password
-        in: path
-        name: password
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/user.GetModeratorRes'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/models.Error'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/models.Error'
-      summary: Login moderator
-      tags:
-      - Admins
   /v1/post:
     post:
       consumes:
@@ -648,7 +712,7 @@ paths:
       parameters:
       - description: Register user
         in: body
-        name: body
+        name: user
         required: true
         schema:
           $ref: '#/definitions/models.RegisterUserModel'
@@ -658,7 +722,7 @@ paths:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/models.Error'
+            $ref: '#/definitions/models.User'
         "500":
           description: Internal Server Error
           schema:

@@ -15,40 +15,12 @@ service UserService{
     rpc CheckField (CheckFieldReq) returns (CheckFieldResp) {}
     rpc Login(LoginReq) returns (LoginResp) {}
     rpc GetByEmail(EmailReq) returns (UserResponse) {}
-    rpc GetAdmin (GetAdminReq) returns (GetAdminRes) {}
-    rpc GetModerator (GetModeratorReq) returns (GetModeratorRes);
+    rpc CreateMod (IdRequest) returns (Empty);
 }
 
-message GetAdminReq {
-    string name = 1;
-    string password = 2;
-}
+message Empty {
 
-message GetAdminRes {
-    string name = 1;
-    string password = 2;
-    string id = 3;
-    string access_token = 4;
-    string created_at = 5;
-    string updated_at = 6;
-    string deleted_at = 7;
 }
-
-message GetModeratorReq {
-    string name = 1;
-    string password = 2;
-}
-
-message GetModeratorRes {
-    string name = 1;
-    string password = 2;
-    string id = 3;
-    string access_token = 4;
-    string created_at = 5;
-    string updated_at = 6;
-    string deleted_at = 7;
-}
-
 
 message UserRequest{
     string first_name = 1;
@@ -58,7 +30,8 @@ message UserRequest{
     string code = 5;
     string id = 6;
     string refresh_token = 7;
-
+    string user_type = 8;
+    PostRequest post = 9;
 }
 
 message UpdateUserRequest {
@@ -84,6 +57,7 @@ message UserResponse{
     string password = 8;
     string access_token = 9;
     string refresh_token = 10;
+    string user_type = 11;
 }
 
 message Post {
@@ -94,6 +68,7 @@ message Post {
     repeated Comment comments = 5;
     string created_at = 6;
     string updated_at = 7;
+    string user_id = 8;
 }
 
 message Comment {
@@ -108,6 +83,7 @@ message Comment {
 
 message IdRequest{
     string id = 1;
+    repeated PostRequest posts = 2;
 }
 
 message AllUsersRequest{
@@ -145,3 +121,10 @@ message LoginResp {
 message EmailReq {
     string email = 1;
 }
+
+message PostRequest {
+    string title = 1;
+    string description = 2;
+    string user_id = 3;
+}
+

@@ -14,6 +14,8 @@ import (
 	p "gitlab.com/micro/user_service/genproto/post"
 	u "gitlab.com/micro/user_service/genproto/user"
 	"gitlab.com/micro/user_service/pkg/logger"
+	"gitlab.com/micro/user_service/pkg/messagebroker"
+
 	grpcclient "gitlab.com/micro/user_service/service/grpc_client"
 	"gitlab.com/micro/user_service/storage"
 
@@ -23,28 +25,55 @@ import (
 )
 
 type UserService struct {
-	storage storage.IStorage
-	Logger  logger.Logger
-	Client  grpcclient.Clients
+	producer map[string]messagebroker.Producer
+	storage  storage.IStorage
+	Logger   logger.Logger
+	Client   grpcclient.Clients
 }
 
-func NewUserService(db *sqlx.DB, log logger.Logger, client grpcclient.Clients) *UserService {
+func NewUserService(db *sqlx.DB, log logger.Logger, producer map[string]messagebroker.Producer, grpc grpcclient.Clients) *UserService {
 	return &UserService{
-		storage: storage.NewStoragePg(db),
-		Logger:  log,
-		Client:  client,
+		storage:  storage.NewStoragePg(db),
+		Logger:   log,
+		producer: producer,
+		Client: grpc,
 	}
+}
+
+func (s *UserService) produceMessage(raw *u.PostRequest) error {
+	data, err := raw.Marshal()
+	if err != nil {
+		return err
+	}
+
+	logPost := raw.String()
+	fmt.Println(logPost)
+	err = s.producer["user"].Produce([]byte("user"), data, logPost)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (s *UserService) CreateUser(ctx context.Context, req *u.UserRequest) (*u.UserResponse, error) {
 	res, err := s.storage.User().CreateUser(req)
-	fmt.Println(res)
 	if err != nil {
-		log.Println("failed to creating user: ", err)
-		return &u.UserResponse{}, err
+		s.Logger.Error("error while creating user", logger.Any("error creating user", err))
+		return &u.UserResponse{}, status.Error(codes.Internal, "something went wrong")
 	}
 
-	return res, nil
+	post := req.Post
+	if post != nil {
+		err = s.produceMessage(post)
+		if err != nil {
+			fmt.Println(err)
+		}
+		return res, nil
+	} else {
+		fmt.Println(res)
+		return res, nil
+	}
 }
 
 func (s *UserService) GetUserById(ctx context.Context, req *u.IdRequest) (*u.UserResponse, error) {
@@ -96,7 +125,6 @@ func (s *UserService) GetUserById(ctx context.Context, req *u.IdRequest) (*u.Use
 
 		res.Posts = append(res.Posts, &pst)
 	}
-
 	return res, nil
 }
 
@@ -331,21 +359,11 @@ func (s *UserService) GetByEmail(ctx context.Context, req *u.EmailReq) (*u.UserR
 	return res, nil
 }
 
-func (s *UserService) GetAdmin(ctx context.Context, req *u.GetAdminReq) (*u.GetAdminRes, error) {
-	res, err := s.storage.User().GetAdmin(req) 
+func (s *UserService) CreateMod(ctx context.Context, req *u.IdRequest) (*u.Empty, error) {
+	res, err := s.storage.User().CreateMod(req)
 	if err != nil {
-		s.Logger.Error("Error while getting admin:", logger.Any("get", err))
-		return &u.GetAdminRes{}, status.Error(codes.NotFound, "Your are not admin")
-	}
-
-	return res, nil
-}
-
-func (s *UserService) GetModerator(ctx context.Context, req *u.GetModeratorReq) (*u.GetModeratorRes, error) {
-	res, err := s.storage.User().GetModerator(req) 
-	if err != nil {
-		s.Logger.Error("Error while getting moderator:", logger.Any("get", err))
-		return &u.GetModeratorRes{}, status.Error(codes.NotFound, "Your are not moderator")
+		log.Println("failed while creating moderator: ", err)
+		return &u.Empty{}, err
 	}
 
 	return res, nil

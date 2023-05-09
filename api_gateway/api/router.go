@@ -57,7 +57,7 @@ func New(option Option) *gin.Engine {
 		Log:       option.Logger,
 	}
 
-	router.Use(middleware.NewAuthorizer(option.CasbinEnforcer, jwtHandler, option.Conf))
+	router.Use(middleware.NewAuth(option.CasbinEnforcer, jwtHandler, option.Conf))
 
 	handlerV1 := v1.New(&v1.HandlerV1Config{
 		Logger:         option.Logger,
@@ -65,6 +65,7 @@ func New(option Option) *gin.Engine {
 		Cfg:            option.Conf,
 		Redis:          option.InMemoryStorage,
 		JWTHandler:     jwtHandler,
+		Casbin: *option.CasbinEnforcer,
 	})
 
 	api := router.Group("/v1")
@@ -94,8 +95,9 @@ func New(option Option) *gin.Engine {
 	api.GET("/login/:email/:password", handlerV1.Login)
 
 	// admin
-	api.GET("/admin/login/:admin_name/:password", handlerV1.LoginAdmin)
-	api.GET("/moderator/login/:name/:password", handlerV1.LoginModerator)
+	api.POST("/admin/register", handlerV1.RegisterAdmin)
+	api.GET("/admin/verify/{email}/{code}", handlerV1.VerifyAdmin)
+	api.PATCH("/admin/create_mod/{id}", handlerV1.CreateMod)
 
 	// swagger
 	url := ginSwagger.URL("swagger/doc.json")

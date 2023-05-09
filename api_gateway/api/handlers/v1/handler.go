@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/casbin/casbin/v2"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"gitlab.com/micro/api_gateway/api/handlers/models"
@@ -21,6 +22,7 @@ type handlerV1 struct {
 	cfg            config.Config
 	redis          repo.RedisRepo
 	jwthandler     t.JWTHandler
+	casbin         casbin.Enforcer
 }
 
 type HandlerV1Config struct {
@@ -29,6 +31,7 @@ type HandlerV1Config struct {
 	Cfg            config.Config
 	Redis          repo.RedisRepo
 	JWTHandler     t.JWTHandler
+	Casbin         casbin.Enforcer
 }
 
 func New(c *HandlerV1Config) handlerV1 {
@@ -38,6 +41,7 @@ func New(c *HandlerV1Config) handlerV1 {
 		cfg:            c.Cfg,
 		redis:          c.Redis,
 		jwthandler:     c.JWTHandler,
+		casbin:         c.Casbin,
 	}
 }
 

@@ -26,8 +26,8 @@ import (
 // @Tags		Register
 // @Accept		json
 // @Produce 	json
-// @Param 		body	body  	 models.RegisterUserModel true "Register user"
-// @Success		201 	{object} models.Error
+// @Param 		user	body  	 models.RegisterUserModel true "Register user"
+// @Success		201 	{object} models.User
 // @Failure		500 	{object} models.Error
 // @Router		/v1/user/register 	[post]
 func (h *handlerV1) RegisterUser(c *gin.Context) {
@@ -88,6 +88,7 @@ func (h *handlerV1) RegisterUser(c *gin.Context) {
 		Id:        uuid.New().String(),
 		FirstName: body.FirstName,
 		LastName:  body.LastName,
+		UserType: "user",
 		Email:     body.Email,
 		Password:  body.Password,
 	}

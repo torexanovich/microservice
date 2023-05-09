@@ -1,8 +1,10 @@
 p, unauthorized, /v1/swagger/*, GET    
 p, unauthorized, /v1/swagger/index.html, GET    
 p, unauthorized, /v1/swagger/index.html, POST
-p, unauthorized, /v1/user/register POST
+p, unauthorized, /v1/user/register, POST
+p, unauthorized, /v1/admin/register, POST
 p, unauthorized, /v1/verify/{email}/{code}, GET
+p, unauthorized, /v1/admin/ verify/{email}/{code}, GET
 p, unauthorized, /v1/login/{email}/{password}, GET
-p, unauthorized, /v1/admin/login/{admin_name}/{password}, GET
-p, unauthorized, /v1/moderator/login/{name}/{password}, GET
+p, moderator, /v1/user, GET
+p, admin, /v1/admin/create_mod/{id}, PATCH

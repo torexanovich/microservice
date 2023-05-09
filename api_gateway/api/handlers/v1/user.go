@@ -3,6 +3,7 @@ package v1
 import (
 	"context"
 	"net/http"
+	"time"
 
 	pu "gitlab.com/micro/api_gateway/genproto/user"
 	l "gitlab.com/micro/api_gateway/pkg/logger"
@@ -188,4 +189,35 @@ func (h *handlerV1) DeleteUser(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, response)
+}
+
+
+// create mod
+// @Summary create mod
+// @Description create mod by user id
+// @Tags Admin
+// @Security BearerAuth
+// @Accept json
+// @Produce json
+// @Param id path string true "user id" 
+// @Succes 200 {object} models.Empty
+// @Router /v1/admin/create_mod/{id} [patch]	
+func (h *handlerV1) CreateMod(c *gin.Context) {
+	var jspbMarshal protojson.MarshalOptions
+	jspbMarshal.UseProtoNames = true
+
+	uuid := c.Param("id")
+	ctx, cancel :=  context.WithTimeout(context.Background(), time.Second*time.Duration(h.cfg.CtxTimeout))
+	defer cancel()
+
+	resp, err := h.serviceManager.UserService().CreateMod(ctx, &pu.IdRequest{Id: uuid})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		h.log.Error("failed to create moderator", l.Error(err))
+		return
+	}
+
+	c.JSON(http.StatusOK, resp)
 }

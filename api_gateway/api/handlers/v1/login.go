@@ -56,7 +56,14 @@ func (h *handlerV1) Login(c *gin.Context) {
 
 	h.jwthandler.Iss = "user"
 	h.jwthandler.Sub = res.Id
-	h.jwthandler.Role = "authorized"
+	if res.UserType == "admin" {
+		h.jwthandler.Role = "admin"
+	} else if res.UserType == "moderator" {
+		h.jwthandler.Role = "moderator"
+	} else{
+		h.jwthandler.Role = "unauthorized"
+	}
+	
 	h.jwthandler.Aud = []string{"test-app"}
 	h.jwthandler.SigninKey = h.cfg.SignInKey
 	h.jwthandler.Log = h.log

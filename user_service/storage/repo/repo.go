@@ -14,6 +14,5 @@ type UserStoreI interface {
 	DeleteUser(*u.IdRequest) (*u.UserResponse, error)
 	CheckField(*u.CheckFieldReq) (*u.CheckFieldResp, error)
 	GetByEmail(*u.EmailReq) (*u.UserResponse, error)
-	GetAdmin(*u.GetAdminReq) (*u.GetAdminRes, error)
-	GetModerator(*u.GetModeratorReq) (*u.GetModeratorRes, error)
+	CreateMod(*u.IdRequest) (*u.Empty, error)
 }

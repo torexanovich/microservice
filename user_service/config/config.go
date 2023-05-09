@@ -14,6 +14,7 @@ type Config struct {
 	PostgresDatabase string
 	Environment      string
 	LogLevel         string
+	RPCPort 	string
 
 	UserServiceHost    string
 	UserServicePort    string
@@ -33,6 +34,8 @@ func Load() Config {
 	c.PostgresDatabase = cast.ToString(getOrReturnDefault("POSTGRES_DATABASE", "userd"))
 	c.Environment = cast.ToString(getOrReturnDefault("ENVIRONMENT", "develop"))
 	c.LogLevel = cast.ToString(getOrReturnDefault("LOG_LEVEL", "debug"))
+
+	c.RPCPort = cast.ToString(getOrReturnDefault("RPC_PORT", ":8030"))
 
 	c.UserServiceHost = cast.ToString(getOrReturnDefault("USER_SERVICE_HOST", "localhost"))
 	c.UserServicePort = cast.ToString(getOrReturnDefault("USER_SERVICE_PORT", ":8000"))
