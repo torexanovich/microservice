@@ -32,11 +32,9 @@ func (k KafkaConsumer) Start() {
 		if err != nil {
 			k.log.Error("Failed to handle the consumed topic: ", logger.String("on topic", m.Topic))
 		} else {
-			fmt.Println("\nCheers! \n ")
 			k.log.Info("Successfully consumed message",
 				logger.String("on topic", m.Topic),
 				logger.String("message", "success"))
-			fmt.Println("\n COOL!\n ")
 		}
 	}
 
@@ -47,7 +45,7 @@ func (k KafkaConsumer) Start() {
 }
 
 func NewKafkaConsumer(db *sqlx.DB, conf *config.Config, log logger.Logger, topic string) messagebroker.Consumer {
-	connStr := "localhost:9092"
+	connStr := "kafka:9092"
 	return &KafkaConsumer{
 		KafkaConsumer: kafka.NewReader(
 			kafka.ReaderConfig{

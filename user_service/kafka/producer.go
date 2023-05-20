@@ -16,7 +16,7 @@ type KafkaProduce struct {
 }
 
 func NewKafkaProducer(conf config.Config, log logger.Logger, topic string) messagebroker.Producer {
-	connStr := "localhost:9092"
+	connStr := "kafka:9092"
 
 	return &KafkaProduce{
 		kafkaWriter: &kafka.Writer{
