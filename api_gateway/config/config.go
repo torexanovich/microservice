@@ -40,18 +40,18 @@ func Load() Config {
 	c.PostgresUser = cast.ToString(getOrReturnDefault("POSTGRES_USER", "smn"))
 	c.PostgresPassword = cast.ToString(getOrReturnDefault("POSTGRES_PASSWORD", "123"))
 	c.PostgresHost = cast.ToString(getOrReturnDefault("POSTGRES_HOST", "localhost"))
-	c.PostgresPort = cast.ToString(getOrReturnDefault("POSTGRES_PORT", "5432"))
-	c.PostgresDatabase = cast.ToString(getOrReturnDefault("POSTGRES_DATABASE", "userd"))
+	c.PostgresPort = cast.ToString(getOrReturnDefault("POSTGRES_PORT", "5434"))
+	c.PostgresDatabase = cast.ToString(getOrReturnDefault("POSTGRES_DATABASE", "human"))
 	c.LogLevel = cast.ToString(getOrReturnDefault("LOG_LEVEL", "debug"))
 	c.HTTPPort = cast.ToString(getOrReturnDefault("HTTP_PORT", ":5050"))
 
-	c.UserServiceHost = cast.ToString(getOrReturnDefault("USER_SERVICE_HOST", "localhost"))
+	c.UserServiceHost = cast.ToString(getOrReturnDefault("USER_SERVICE_HOST", "user_service"))
 	c.UserServicePort = cast.ToString(getOrReturnDefault("USER_SERVICE_PORT", "8000"))
 
-	c.PostServiceHost = cast.ToString(getOrReturnDefault("POST_SERVICE_HOST", "localhost"))
+	c.PostServiceHost = cast.ToString(getOrReturnDefault("POST_SERVICE_HOST", "post_service"))
 	c.PostServicePort = cast.ToString(getOrReturnDefault("POST_SERVICE_PORT", "8010"))
 
-	c.CommentServiceHost = cast.ToString(getOrReturnDefault("COMMENT_SERVICE_HOST", "localhost"))
+	c.CommentServiceHost = cast.ToString(getOrReturnDefault("COMMENT_SERVICE_HOST", "comment_service"))
 	c.CommentServicePort = cast.ToString(getOrReturnDefault("COMMENT_SERVICE_PORT", "8020"))
 
 	c.RedisHost = cast.ToString(getOrReturnDefault("REDIS_HOST", "localhost"))

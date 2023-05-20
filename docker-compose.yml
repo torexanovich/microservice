@@ -3,13 +3,25 @@ version: '3.8'
 services:
   database:
     container_name: database
-    
+    image: postgres:14.1
+    environment:
+      POSTGRES_DATABASE: human
+      POSTGRES_PASSWORD: '123'
+      POSTGRES_USER: smn
+    expose:
+      - "5434"
+    ports:
+      - "5434:5434"
+    volumes:
+      - dbdata:/var/lib/postgresql/database
+    command: -p 5434
+
   user_service:
     container_name: user_service
     build: ./user_service
     depends_on:
       - "kafka"
-      - "dbpost"
+      - "database"
     ports:
       - "8000:8000"
 
@@ -18,10 +30,18 @@ services:
     build: ./post_service
     depends_on:
       - "kafka"
-      - "dbpost"
+      - "database"
     ports:
       - "8010:8010"
-    
+
+  comment_service:
+    container_name: comment_service
+    build: ./comment_service
+    depends_on:
+      - "database"
+    ports:
+      - "8020:8020"
+
   api:
     container_name: api_gateway
     build: ./api_gateway
@@ -29,31 +49,9 @@ services:
       - "redisdb"
       - "user_service"
       - "post_service"
+      - "comment_service"
     ports:
       - "5050:5050"
-  
-  dbpost:
-    container_name: dbpost
-    image: postgres:14.1
-    environment:
-      POSTGRES_DATABASE: postdb 
-      POSTGRES_USER: smn
-      POSTGRES_PASSWORD: 123
-    expose:
-      - "5433"
-    ports:
-      - "5433:5433"
-    volumes:
-      - dbdata:/var/lib/postgresql/data 
-    command: -p 5433
-  
-  # migrate:
-  #   image: migrate/migrate
-  #   command: -database postgres://smn:123:@dbpost:5433/localhost up
-  #   links: 
-  #     - dbpost
-  #   depends_on:
-  #     - dbpost
 
   redisdb:
     container_name: redisdb
@@ -84,4 +82,3 @@ services:
 
 volumes:
   dbdata:
-

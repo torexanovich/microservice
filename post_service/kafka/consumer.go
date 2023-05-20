@@ -23,10 +23,9 @@ func (k KafkaConsumer) Start() {
 	fmt.Println("Consumer started")
 	for {	
 		m, err := k.KafkaConsumer.ReadMessage(context.Background())
-		fmt.Println("HERE IT IS:", m, err)
 		if err != nil {
 			k.log.Error("Error while consuming the message", logger.Error(err))
-			break
+			
 		}
 		
 		err = k.KafkaHandler.Handle(m.Value)

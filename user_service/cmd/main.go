@@ -23,10 +23,10 @@ func main() {
 	log := logger.New(cfg.LogLevel, "golang")
 	defer logger.Cleanup(log)
 
-	log.Info("main:sqlxConfig",
-		logger.String("'host", cfg.CommentServiceHost),
-		logger.String("port", cfg.PostgresPort),
-		logger.String("database", cfg.PostgresDatabase))
+	// log.Info("main:sqlxConfig",
+	// 	logger.String("'host", cfg.CommentServiceHost),
+	// 	logger.String("port", cfg.PostgresPort),
+	// 	logger.String("database", cfg.PostgresDatabase))
 
 	connDb, err := db.ConnectToDB(cfg)
 	if err != nil {
@@ -50,7 +50,7 @@ func main() {
 	}
 
 	uService := service.NewUserService(connDb, log, produceMap, grpcClient)
-	lis, err := net.Listen("tcp", cfg.RPCPort)
+	lis, err := net.Listen("tcp", cfg.UserServicePort)
 	if err != nil {
 		log.Fatal("Error while listening: %v", logger.Error(err))
 	}
@@ -58,7 +58,7 @@ func main() {
 	reflection.Register(s)
 	u.RegisterUserServiceServer(s, uService)
 	log.Info("main: server is running",
-		logger.String("port", cfg.RPCPort))
+		logger.String("port", cfg.UserServicePort))
 	if err := s.Serve(lis); err != nil {
 		log.Fatal("Error while listenning: %v", logger.Error(err))
 	}
