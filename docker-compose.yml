@@ -5,8 +5,8 @@ services:
     container_name: database
     image: postgres:14.1
     environment:
-      POSTGRES_DATABASE: human
-      POSTGRES_PASSWORD: '123'
+      POSTGRES_DATABASE: smn
+      POSTGRES_PASSWORD: 123
       POSTGRES_USER: smn
     expose:
       - "5434"

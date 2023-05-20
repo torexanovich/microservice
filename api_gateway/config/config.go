@@ -5,7 +5,7 @@ import (
 
 	"github.com/spf13/cast"
 )
-
+ 
 type Config struct {
 	Environment string // develop, staging, production
 
@@ -41,7 +41,7 @@ func Load() Config {
 	c.PostgresPassword = cast.ToString(getOrReturnDefault("POSTGRES_PASSWORD", "123"))
 	c.PostgresHost = cast.ToString(getOrReturnDefault("POSTGRES_HOST", "database"))
 	c.PostgresPort = cast.ToString(getOrReturnDefault("POSTGRES_PORT", "5434"))
-	c.PostgresDatabase = cast.ToString(getOrReturnDefault("POSTGRES_DATABASE", "human"))
+	c.PostgresDatabase = cast.ToString(getOrReturnDefault("POSTGRES_DATABASE", "smn"))
 	c.LogLevel = cast.ToString(getOrReturnDefault("LOG_LEVEL", "debug"))
 	c.HTTPPort = cast.ToString(getOrReturnDefault("HTTP_PORT", ":5050"))
 
