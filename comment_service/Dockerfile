@@ -4,4 +4,4 @@ COPY . /micro
 WORKDIR /micro
 RUN go build -o main cmd/main.go
 CMD ./main
-EXPOSE 8000
+EXPOSE 8020
