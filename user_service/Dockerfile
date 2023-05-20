@@ -2,6 +2,7 @@ FROM golang:1.17-alpine
 RUN mkdir micro
 COPY . /micro
 WORKDIR /micro
+RUN make migrate_up
 
 # ENV
 ENV POSTGRES_USER=smn
