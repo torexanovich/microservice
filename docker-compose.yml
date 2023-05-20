@@ -1,46 +1,84 @@
-version: '3.7'
-services:
+version: '3.8'
 
-  kafka-ui:
-    container_name: kafka-ui
-    image: provectuslabs/kafka-ui:latest
-    ports:
-      - 8000:8000 
+services:
+  user_service:
+    container_name: user_service
+    build: ./user_service
     depends_on:
-      - zookeeper
-      - kafka
+      - "kafka"
+      - "dbpost"
+    ports:
+      - "8000:8000"
+
+  post_service:
+    container_name: post_service
+    build: ./post_service
+    depends_on:
+      - "kafka"
+      - "dbpost"
+    ports:
+      - "8010:8010"
+    
+  api:
+    container_name: api_gateway
+    build: ./api_gateway
+    depends_on:
+      - "redisdb"
+      - "user_service"
+      - "post_service"
+    ports:
+      - "5050:5050"
+  
+  dbpost:
+    container_name: dbpost
+    image: postgres:14.1
     environment:
-      KAFKA_CLUSTERS_0_NAME: local
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
-      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+      POSTGRES_DATABASE: postdb 
+      POSTGRES_USER: smn
+      POSTGRES_PASSWORD: 123
+    expose:
+      - "5433"
+    ports:
+      - "5433:5433"
+    volumes:
+      - dbdata:/var/lib/postgresql/data 
+    command: -p 5433
+  
+  # migrate:
+  #   image: migrate/migrate
+  #   command: -database postgres://smn:123:@dbpost:5433/localhost up
+  #   links: 
+  #     - dbpost
+  #   depends_on:
+  #     - dbpost
+
+  redisdb:
+    container_name: redisdb
+    image: redis 
+    ports:
+      - "6380:6379"
 
   zookeeper:
-    container_name: zookeeper
     image: confluentinc/cp-zookeeper:latest
     environment:
-      ZOOKEEPER_CLIENT_PORT: 2180
+      ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
     ports:
-      - "2181:2181"
-
+      - "22181:2181"
+    
   kafka:
-    container_name: kafka
     image: confluentinc/cp-kafka:latest
     depends_on:
-      - zookeeper
+      - "zookeeper"
     ports:
-      - "9092:9092"
       - "29092:29092"
     environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENERS: EXTERNAL_SAME_HOST://:29092,INTERNAL://:9092
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
       KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,EXTERNAL_SAME_HOST://localhost:29092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL_SAME_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
-networks:
-  default:
-    external:
-      name: go-bootcamp-7
+volumes:
+  dbdata:
+

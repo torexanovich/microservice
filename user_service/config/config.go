@@ -35,7 +35,7 @@ func Load() Config {
 	c.Environment = cast.ToString(getOrReturnDefault("ENVIRONMENT", "develop"))
 	c.LogLevel = cast.ToString(getOrReturnDefault("LOG_LEVEL", "debug"))
 
-	c.RPCPort = cast.ToString(getOrReturnDefault("RPC_PORT", ":8030"))
+	c.RPCPort = cast.ToString(getOrReturnDefault("RPC_PORT", "8030"))
 
 	c.UserServiceHost = cast.ToString(getOrReturnDefault("USER_SERVICE_HOST", "localhost"))
 	c.UserServicePort = cast.ToString(getOrReturnDefault("USER_SERVICE_PORT", ":8000"))
