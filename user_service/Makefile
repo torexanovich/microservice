@@ -5,7 +5,7 @@ proto-gen:
 	./scripts/gen-proto.sh
 
 migrate_up:
-	migrate -path migrations -database postgres://smn:123@localhost:5434/smn -verbose up
+	migrate -path migrations -database postgres://smn:123@localhost:5434/smn up
 
 migrate_down:
 	migrate -path migrations -database postgres://smn:123@localhost:5434/smn -verbose down

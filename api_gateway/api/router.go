@@ -31,7 +31,7 @@ type Option struct {
 // @termsOfService  Golang
 
 // @contact.name   Amirkhan
-// @contact.url    https://t.me/torexanovich
+// @telegram    https://t.me/torexanovich
 // @contact.email  torexanovich.l@gmail.com
 
 // @host    	   localhost:5050

@@ -18,7 +18,10 @@ services:
 
   user_service:
     container_name: user_service
-    build: ./user_service
+    build: 
+      context: ./user_service
+      # args:
+      #   MAKE_TARGET: migrate_up
     depends_on:
       - "kafka"
       - "database"
@@ -27,7 +30,10 @@ services:
 
   post_service:
     container_name: post_service
-    build: ./post_service
+    build: 
+      context: ./post_service
+      # args:
+      #   MAKE_TARGET: migrate_up
     depends_on:
       - "kafka"
       - "database"
@@ -36,7 +42,10 @@ services:
 
   comment_service:
     container_name: comment_service
-    build: ./comment_service
+    build: 
+      context: ./comment_service
+      # args:
+      #   MAKE_TARGET: migrate_up
     depends_on:
       - "database"
     ports:
@@ -44,7 +53,10 @@ services:
 
   api:
     container_name: api_gateway
-    build: ./api_gateway
+    build: 
+      context: ./api_gateway
+      # args:
+      #   MAKE_TARGET: migrate_up
     depends_on:
       - "redisdb"
       - "user_service"

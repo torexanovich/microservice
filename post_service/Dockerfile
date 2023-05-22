@@ -1,8 +1,19 @@
 FROM golang:1.17-alpine
-RUN mkdir micro
-COPY . /micro
-WORKDIR /micro
-RUN make migrate_up
+
+# installing make
+# RUN apk add --no-cache make git \
+#     && go get -u -d github.com/golang-migrate/migrate/cmd/migrate \
+#     && cd $GOPATH/src/github.com/golang-migrate/migrate/cmd/migrate \
+#     && git checkout $(git describe --tags $(git rev-list --tags --max-count=1)) \
+#     && go build -tags 'postgres' -o /usr/local/bin/migrate \
+#     && apk del git
+
+# ARG MAKE_TARGET
+
+RUN mkdir /post
+COPY . /post
+WORKDIR /post
+# RUN make $MAKE_TARGET
 
 # Set environment variables
 ENV POSTGRES_USER=smn
