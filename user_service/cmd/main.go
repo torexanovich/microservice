@@ -23,10 +23,10 @@ func main() {
 	log := logger.New(cfg.LogLevel, "golang")
 	defer logger.Cleanup(log)
 
-	// log.Info("main:sqlxConfig",
-	// 	logger.String("'host", cfg.CommentServiceHost),
-	// 	logger.String("port", cfg.PostgresPort),
-	// 	logger.String("database", cfg.PostgresDatabase))
+	log.Info("main:sqlxConfig",
+		logger.String("'host", cfg.CommentServiceHost),
+		logger.String("port", cfg.PostgresPort),
+		logger.String("database", cfg.PostgresDatabase))
 
 	connDb, err := db.ConnectToDB(cfg)
 	if err != nil {
