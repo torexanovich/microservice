@@ -54,7 +54,7 @@ func Load() Config {
 	c.CommentServiceHost = cast.ToString(getOrReturnDefault("COMMENT_SERVICE_HOST", "comment_service"))
 	c.CommentServicePort = cast.ToString(getOrReturnDefault("COMMENT_SERVICE_PORT", "8020"))
 
-	c.RedisHost = cast.ToString(getOrReturnDefault("REDIS_HOST", "localhost"))
+	c.RedisHost = cast.ToString(getOrReturnDefault("REDIS_HOST", "redisdb"))
 	c.RedisPort = cast.ToInt(getOrReturnDefault("REDIS_PORT", 6379))
 	c.SignInKey = cast.ToString(getOrReturnDefault("SIGNING_KEY", "123"))
 	c.CtxTimeout = cast.ToInt(getOrReturnDefault("CTX_TIMEOUT", 7))

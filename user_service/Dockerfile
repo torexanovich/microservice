@@ -1,19 +1,8 @@
 FROM golang:1.17-alpine
 
-# installing make
-# RUN apk add --no-cache make git \
-#     && go get -u -d github.com/golang-migrate/migrate/cmd/migrate \
-#     && cd $GOPATH/src/github.com/golang-migrate/migrate/cmd/migrate \
-#     && git checkout $(git describe --tags $(git rev-list --tags --max-count=1)) \
-#     && go build -tags 'postgres' -o /usr/local/bin/migrate \
-#     && apk del git
-
-# ARG MAKE_TARGET
-
 RUN mkdir /user
 COPY . /user
 WORKDIR /user
-# RUN make $MAKE_TARGET
 
 # Set environment variables
 ENV POSTGRES_USER=smn
@@ -32,4 +21,4 @@ ENV COMMENT_SERVICE_PORT=8020
 
 RUN go build -o main cmd/main.go
 CMD ./main
-EXPOSE 8020
+EXPOSE 8000
