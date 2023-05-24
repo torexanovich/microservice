@@ -41,13 +41,13 @@ func (p *KafkaProduce) Stop() error {
 	return nil
 }
 
-func (p *KafkaProduce) Produce(key,body []byte, logBody string) error {
+func (p *KafkaProduce) Produce(key, body []byte, logBody string) error {
 	message := kafka.Message{
-		Key: key,
+		Key:   key,
 		Value: body,
 	}
 
-	if err :=  p.kafkaWriter.WriteMessages(context.Background(), message); err != nil {
+	if err := p.kafkaWriter.WriteMessages(context.Background(), message); err != nil {
 		return err
 	}
 
